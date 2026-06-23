@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CV Fácil - Plataforma Simplificada</title>
+    <style>
+        :root {
+            --primary: #002347;
+            --primary-light: #003366;
+            --secondary: #4682B4;
+            --accent: #00A86B;
+            --dark: #2C3E50;
+            --light: #F4F7F6;
+            --white: #ffffff;
+            --gray: #7F8C8D;
+            --cv-sidebar: #F8FAFC;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background-color: var(--primary);
+            color: var(--white);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        header .logo {
+            font-size: 22px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        header .logo span {
+            color: var(--secondary);
+        }
+
+        nav button {
+            background: none;
+            border: none;
+            color: var(--white);
+            font-size: 15px;
+            margin-left: 20px;
+            cursor: pointer;
+            padding: 8px 16px;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+
+        nav button:hover, nav button.active {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--white);
+            border-bottom: 2px solid var(--secondary);
+        }
+
+        .page-section {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out forwards;
+        }
+
+        .page-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .home-container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: var(--white);
+            border-radius: 12px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .hero h1 {
+            font-size: 36px;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: #E0E6ED;
+            max-width: 700px;
+            margin: 0 auto 25px auto;
+            line-height: 1.6;
+        }
+
+        .cta-btn {
+            background-color: var(--accent);
+            color: var(--white);
+            border: none;
+            padding: 14px 28px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.3s;
+        }
+
+        .cta-btn:hover {
+            background-color: #00935B;
+            transform: scale(1.03);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .feature-card {
+            background-color: var(--white);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            border-top: 4px solid var(--secondary);
+        }
+
+        .feature-card h3 {
+            color: var(--primary);
+            margin-bottom: 12px;
+            font-size: 18px;
+        }
+
+        .feature-card p {
+            font-size: 14px;
+            color: var(--gray);
+            line-height: 1.6;
+        }
+
+        .app-container {
+            display: flex;
+            width: 100%;
+            height: calc(100vh - 62px);
+        }
+
+        .editor-panel {
+            width: 40%;
+            background-color: var(--white);
+            padding: 25px;
+            overflow-y: auto;
+            border-right: 1px solid #E2E8F0;
+        }
+
+        .preview-panel {
+            width: 60%;
+            padding: 30px;
+            background-color: #E2E8F0;
+            overflow-y: auto;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .panel-title {
+            color: var(--primary);
+            font-size: 20px;
+            margin-bottom: 5px;
+            font-weight: 700;
+        }
+
+        .panel-subtitle {
+            font-size: 13px;
+            color: var(--gray);
+            margin-bottom: 20px;
+        }
+
+        .form-section {
+            background-color: var(--light);
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+
+        .form-section h3 {
+            font-size: 14px;
+            color: var(--primary-light);
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 11px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: var(--dark);
+            text-transform: uppercase;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #CBD5E1;
+            border-radius: 4px;
+            font-size: 13px;
+            color: var(--dark);
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: var(--secondary);
+        }
+
+        .form-group textarea {
+            height: 70px;
+            resize: vertical;
+        }
+
+        .btn-action {
+            background-color: var(--primary);
+            color: var(--white);
+            border: none;
+            padding: 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+            width: 100%;
+            transition: background 0.3s;
+        }
+
+        .btn-action:hover {
+            background-color: var(--secondary);
+        }
+
+        /* CONFIGURAÇÃO DA FOLHA A4 PARA ESTRUTURA VISUAL FIXA */
+        .cv-sheet {
+            background-color: var(--white);
+            width: 100%;
+            max-width: 595px;
+            height: 842px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            border-radius: 2px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .cv-top-banner {
+            background-color: var(--primary);
+            color: var(--white);
+            padding: 30px 40px;
+            text-align: left;
+        }
+
+        .cv-name {
+            font-size: 26px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .cv-title {
+            color: var(--secondary);
+            font-size: 14px;
+            font-weight: 600;
+            margin-top: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .cv-main-layout {
+            display: flex;
+            flex: 1;
+        }
+
+        .cv-sidebar {
+            width: 35%;
+            background-color: var(--cv-sidebar);
+            padding: 25px;
+            border-right: 1px solid #E2E8F0;
+        }
+
+        .cv-content-body {
+            width: 65%;
+            padding: 25px 35px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .cv-body-section {
+            margin-bottom: 5px;
+        }
+
+        .cv-body-title {
+            color: var(--primary);
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            border-bottom: 2px solid var(--secondary);
+            padding-bottom: 3px;
+            margin-bottom: 10px;
+            letter-spacing: 0.5px;
+        }
+
+        .cv-body-text {
+            font-size: 11.5px;
+            line-height: 1.5;
+            color: #334155;
+            white-space: pre-line;
+        }
+
+        .contact-item {
+            font-size: 11px;
+            color: #475569;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+
+        /* ----------------------------------------------------------- */
+        /*     CORREÇÃO DEFINITIVA PARA IMPRESSÃO DE ALTA QUALIDADE   */
+        /* ----------------------------------------------------------- */
+        @page {
+            size: A4 portrait;
+            margin: 0; /* Remove os cabeçalhos padrão do navegador (data, título, etc.) */
+        }
+
+        @media print {
+            /* Garante que o navegador force as cores de fundo */
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+                color-adjust: exact !important;
+            }
+
+            header, .editor-panel {
+                display: none !important; /* Esconde a interface do site */
+            }
+
+            body {
+                background: none !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                width: 100vw !important;
+                height: 100vh !important;
+            }
+
+            .preview-panel {
+                background: none !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                width: 100% !important;
+                height: 100% !important;
+                display: block !important;
+                overflow: hidden !important;
+            }
+
+            .cv-sheet {
+                box-shadow: none !important;
+                border: none !important;
+                margin: 0 !important;
+                width: 100% !important;
+                height: 100% !important;
+                max-width: none !important;
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">CV <span>Fácil</span></div>
+        <nav>
+            <button id="nav-home" class="active" onclick="switchPage('home')">Sobre o Projeto</button>
+            <button id="nav-app" onclick="switchPage('app')">Gerador de Currículo</button>
+        </nav>
+    </header>
+
+    <div id="page-home" class="page-section active">
+        <div class="home-container">
+            <div class="hero">
+                <h1>Descomplicando o Primeiro Passo Profissional</h1>
+                <p>O <strong>CV Fácil</strong> é uma solução de Front-End interativa projetada sob medida para apoiar pessoas inexperientes ou que estão em busca do primeiro emprego, eliminando todas as barreiras de formatação de texto.</p>
+                <button class="cta-btn" onclick="switchPage('app')">Começar a Criar Agora</button>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h3>Foco em Inexperientes</h3>
+                    <p>Muitas pessoas perdem oportunidades por não saberem como alinhar margens ou estruturar seções. O sistema cuida de toda a estética profissional de forma automática.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Interface Real-Time</h3>
+                    <p>À medida que os campos são preenchidos, uma folha em formato padrão A4 é atualizada instantaneamente ao lado. Sem surpresas ou distorções no arquivo final.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Privacidade Total & Leveza</h3>
+                    <p>Uma aplicação puramente Front-End. Seus dados não são salvos em nenhum servidor externo, garantindo segurança e agilidade absoluta.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="page-app" class="page-section">
+        <div class="app-container">
+            <div class="editor-panel">
+                <div class="panel-title">Editor de Conteúdo</div>
+                <div class="panel-subtitle">Desenvolvido por Gabriel Sismil de Lima Coelho</div>
+
+                <div class="form-section">
+                    <h3>Identificação</h3>
+                    <div class="form-group">
+                        <label for="in-name">Nome Completo</label>
+                        <input type="text" id="in-name" value="Gabriel Sismil de Lima Coelho">
+                    </div>
+                    <div class="form-group">
+                        <label for="in-role">Objetivo Profissional / Cargo</label>
+                        <input type="text" id="in-role" value="Candidato a Primeiro Emprego / Estágio Front-End">
+                    </div>
+                    <div class="form-group">
+                        <label for="in-contact">Informações de Contato</label>
+                        <textarea id="in-contact">seu.email@exemplo.com
+(21) 98888-7777
+Rio de Janeiro - RJ</textarea>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Perfil</h3>
+                    <div class="form-group">
+                        <label for="in-about">Resumo Pessoal</label>
+                        <textarea id="in-about">Jovem dinâmico e proativo, focado no aprendizado contínuo na área de tecnologia. Busco uma primeira oportunidade profissional para aplicar competências de organização e desenvolvimento de soluções digitais.</textarea>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Educação</h3>
+                    <div class="form-group">
+                        <label for="in-edu">Formação Acadêmica</label>
+                        <textarea id="in-edu">• Ensino Superior em Andamento - Análise e Desenvolvimento de Sistemas (UNISUAM).</textarea>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Experiência de Emprego Anterior</h3>
+                    <div class="form-group">
+                        <label for="in-exp">Histórico de Trabalho / Estágios / Voluntariado</label>
+                        <textarea id="in-exp">• Projetos Pessoais de Programação - Construção de páginas web interativas utilizando HTML5, CSS3 e JavaScript.
+• Trabalho Voluntário - Auxílio na organização e suporte digital de eventos locais.</textarea>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Idiomas</h3>
+                    <div class="form-group">
+                        <label for="in-languages">Línguas e Proficiência</label>
+                        <textarea id="in-languages">• Português - Nativo
+• Inglês - Intermediário</textarea>
+                    </div>
+                </div>
+
+                <button class="btn-action" onclick="window.print()">Exportar como PDF Profissional</button>
+            </div>
+
+            <div class="preview-panel">
+                <div class="cv-sheet">
+                    <div class="cv-top-banner">
+                        <div class="cv-name" id="out-name">Gabriel Sismil de Lima Coelho</div>
+                        <div class="cv-title" id="out-role">Candidato a Primeiro Emprego / Estágio Front-End</div>
+                    </div>
+
+                    <div class="cv-main-layout">
+                        <div class="cv-sidebar">
+                            <div class="cv-body-section">
+                                <div class="cv-body-title">Contato</div>
+                                <div class="contact-item" id="out-contact" style="white-space: pre-line;">seu.email@exemplo.com
+(21) 98888-7777
+Rio de Janeiro - RJ</div>
+                            </div>
+                            <div class="cv-body-section" style="margin-top: 30px;">
+                                <div class="cv-body-title">Idiomas</div>
+                                <div class="cv-body-text" id="out-languages">• Português - Nativo
+• Inglês - Intermediário</div>
+                            </div>
+                        </div>
+
+                        <div class="cv-content-body">
+                            <div class="cv-body-section">
+                                <div class="cv-body-title">Objetivo e Perfil</div>
+                                <div class="cv-body-text" id="out-about">Jovem dinâmico e proativo, focado no aprendizado contínuo na área de tecnologia. Busco uma primeira oportunidade profissional para aplicar competências de organização e desenvolvimento de soluções digitais.</div>
+                            </div>
+
+                            <div class="cv-body-section">
+                                <div class="cv-body-title">Formação Acadêmica</div>
+                                <div class="cv-body-text" id="out-edu">• Ensino Superior em Andamento - Análise e Desenvolvimento de Sistemas (UNISUAM).</div>
+                            </div>
+
+                            <div class="cv-body-section">
+                                <div class="cv-body-title">Experiências / Atividades</div>
+                                <div class="cv-body-text" id="out-exp">• Projetos Pessoais de Programação - Construção de páginas web interativas utilizando HTML5, CSS3 e JavaScript.
+• Trabalho Voluntário - Auxílio na organização e suporte digital de eventos locais.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function switchPage(pageId) {
+            document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active'));
+            document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('active'));
+            
+            document.getElementById('page-' + pageId).classList.add('active');
+            document.getElementById('nav-' + pageId).classList.add('active');
+        }
+
+        const bindings = [
+            { input: 'in-name', output: 'out-name' },
+            { input: 'in-role', output: 'out-role' },
+            { input: 'in-contact', output: 'out-contact' },
+            { input: 'in-about', output: 'out-about' },
+            { input: 'in-exp', output: 'out-exp' },
+            { input: 'in-edu', output: 'out-edu' },
+            { input: 'in-languages', output: 'out-languages' }
+        ];
+
+        bindings.forEach(item => {
+            const inputElement = document.getElementById(item.input);
+            const outputElement = document.getElementById(item.output);
+
+            inputElement.addEventListener('input', () => {
+                outputElement.textContent = inputElement.value;
+            });
+        });
+    </script>
+</body>
+</html>
